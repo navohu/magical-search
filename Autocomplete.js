@@ -55,6 +55,26 @@ const AutoComplete = ({ suggestions }) => {
   };
 
   const SuggestionsListComponent = () => {
+    if (!input.length) {
+      return (
+        <ul class="suggestions">
+          {suggestions.map((suggestion, index) => {
+            let className;
+
+            // Flag the active suggestion with a class
+            if (index === activeSuggestionIndex) {
+              className = 'suggestion-active';
+            }
+
+            return (
+              <li className={className} key={suggestion} onClick={onClick}>
+                {suggestion}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    }
     return filteredSuggestions.length ? (
       <ul class="suggestions">
         {filteredSuggestions.map((suggestion, index) => {
