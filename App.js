@@ -1,9 +1,8 @@
 import React, { createElement, Component } from 'react';
-import { getAlgoliaResults } from '@algolia/autocomplete-js';
 import algoliasearch from 'algoliasearch';
 import Autocomplete from './Autocomplete';
-import { ProductItem } from './ProductItem';
 import './style.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const appId = 'latency';
 const apiKey = '6be0576ff61c053d5f9a3225e2a90f76';
@@ -13,7 +12,7 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-        <h1>Magical Search</h1>
+        <h1 class="pt-2 pb-3">Magical Search</h1>
         <div class="autocomplete">
           <Autocomplete
             suggestions={[

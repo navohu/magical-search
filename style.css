@@ -16,6 +16,12 @@ body {
   height: 100vh;
 }
 
+.autocomplete {
+  box-shadow: 3px 4px 20px #888888;
+  border-radius: 3px;
+  background: linear-gradient(360deg, #1a202c21 0%, hsl(0deg 0% 98% / 0%) 10%);
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -30,7 +36,7 @@ body {
 }
 
 input {
-  border: 1px solid hsla(218, 100%, 42%, 1);
+  border: 0;
   outline: none;
   padding: 0 0.5rem;
   width: 300px;
@@ -38,21 +44,29 @@ input {
   border-radius: 5px;
 }
 
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-size: 0.75rem;
+}
+
+*:focus {
+  outline: none;
+}
+
 .no-suggestions {
   color: #999;
   padding: 0.4rem;
-  font-size: 0.9rem;
+  font-size: 0.6rem;
 }
 
 .suggestions {
-  border: 1px solid hsla(218, 100%, 42%, 0.5);
   border-top-width: 0;
   list-style: none;
   margin-top: 0;
   max-height: 143px;
   overflow-y: auto;
-  padding-left: 0;
-  width: 300px;
+  padding: 0;
+  display: unset;
 }
 
 .suggestions::-webkit-scrollbar {
@@ -61,28 +75,16 @@ input {
   border-radius: 20px;
 }
 
-.suggestions::-webkit-scrollbar-thumb {
-  background-color: hsla(218, 100%, 42%, 1);
-}
-
 .suggestions li {
   padding: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.6rem;
   font-weight: 500;
 }
 
 .suggestion-active,
 .suggestions li:hover {
-  background: linear-gradient(
-    90deg,
-    hsla(218, 100%, 42%, 0.6) 0%,
-    hsla(0, 0%, 98%, 1) 200%
-  );
-  color: #fff;
+  background: #cbd5e082;
+  /* color: #fff; */
   cursor: pointer;
   font-weight: 700;
-}
-
-.suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid #999;
 }

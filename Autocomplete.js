@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import React, { createElement, Component } from 'react';
+import React from 'react';
 
 const AutoComplete = ({ suggestions }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -74,10 +74,7 @@ const AutoComplete = ({ suggestions }) => {
       </ul>
     ) : (
       <div class="no-suggestions">
-        <span role="img" aria-label="tear emoji">
-          😪
-        </span>{' '}
-        <em>sorry no suggestions</em>
+        <span role="img">😪</span> <em> sorry no suggestions</em>
       </div>
     );
   };
@@ -91,7 +88,7 @@ const AutoComplete = ({ suggestions }) => {
         onKeyDown={onKeyDown}
         value={input}
       />
-      {showSuggestions && input && <SuggestionsListComponent />}
+      {<SuggestionsListComponent />}
     </>
   );
 };
