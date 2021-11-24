@@ -14,27 +14,28 @@ class App extends Component {
     return (
       <div className="wrapper">
         <h1>Magical Search</h1>
-        <h2>Want to see something cool?, start typing</h2>
-        <Autocomplete
-          suggestions={[
-            'Angular',
-            'Blitzjs',
-            'Gatsby',
-            'Reactjs',
-            'Vuejs',
-            'Svelte',
-            'Nextjs',
-            'Node',
-            'Express',
-            'Sails',
-            'Loopback',
-            'React-router',
-            'Redux',
-            'Flux',
-            'Yarn',
-            'Npm',
-          ]}
-        />
+        <div class="autocomplete">
+          <Autocomplete
+            suggestions={[
+              'Angular',
+              'Blitzjs',
+              'Gatsby',
+              'Reactjs',
+              'Vuejs',
+              'Svelte',
+              'Nextjs',
+              'Node',
+              'Express',
+              'Sails',
+              'Loopback',
+              'React-router',
+              'Redux',
+              'Flux',
+              'Yarn',
+              'Npm',
+            ]}
+          />
+        </div>
       </div>
     );
   }

@@ -86,6 +86,7 @@ const AutoComplete = ({ suggestions }) => {
     <>
       <input
         type="text"
+        placeholder="Type a command or search..."
         onChange={onChange}
         onKeyDown={onKeyDown}
         value={input}
