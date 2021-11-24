@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
 
-const AutoComplete = ({ suggestions }) => {
+const AutoComplete = ({ animals }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -11,10 +11,14 @@ const AutoComplete = ({ suggestions }) => {
     const userInput = e.target.value;
 
     // Filter our suggestions that don't contain the user's input
-    const unLinked = suggestions.filter(
-      (suggestion) =>
-        suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    );
+    const unLinked = animals.map((animal) => {
+      return {
+        category: animal.category,
+        breeds: animal.breeds.filter(
+          (breed) => breed.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        ),
+      };
+    });
 
     setInput(e.target.value);
     setFilteredSuggestions(unLinked);
@@ -56,9 +60,10 @@ const AutoComplete = ({ suggestions }) => {
 
   const SuggestionsListComponent = () => {
     if (!input.length) {
+      console.log(animals);
       return (
         <ul class="suggestions">
-          {suggestions.map((suggestion, index) => {
+          {animals.map((animal, index) => {
             let className;
 
             // Flag the active suggestion with a class
@@ -67,17 +72,42 @@ const AutoComplete = ({ suggestions }) => {
             }
 
             return (
-              <li className={className} key={suggestion} onClick={onClick}>
-                {suggestion}
-              </li>
+              // The animal category
+              <>
+                <li
+                  className={className}
+                  key={animal.category}
+                  onClick={onClick}
+                >
+                  {animal.category}
+                </li>
+
+                <ul class="suggestions">
+                  {animal.breeds.map((breed, index) => {
+                    let className;
+
+                    // Flag the active suggestion with a class
+                    if (index === activeSuggestionIndex) {
+                      className = 'suggestion-active';
+                    }
+                    // The breeds
+                    return (
+                      <li className={className} key={breed} onClick={onClick}>
+                        {breed}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
             );
           })}
         </ul>
       );
     }
+    console.log(filteredSuggestions);
     return filteredSuggestions.length ? (
       <ul class="suggestions">
-        {filteredSuggestions.map((suggestion, index) => {
+        {filteredSuggestions.map((animal, index) => {
           let className;
 
           // Flag the active suggestion with a class
@@ -86,9 +116,29 @@ const AutoComplete = ({ suggestions }) => {
           }
 
           return (
-            <li className={className} key={suggestion} onClick={onClick}>
-              {suggestion}
-            </li>
+            // The animal category
+            <>
+              <li className={className} key={animal.category} onClick={onClick}>
+                {animal.category}
+              </li>
+
+              <ul class="suggestions">
+                {animal.breeds.map((breed, index) => {
+                  let className;
+
+                  // Flag the active suggestion with a class
+                  if (index === activeSuggestionIndex) {
+                    className = 'suggestion-active';
+                  }
+                  // The breeds
+                  return (
+                    <li className={className} key={breed} onClick={onClick}>
+                      {breed}
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
           );
         })}
       </ul>
