@@ -26,7 +26,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  /* text-align: center; */
+}
+
+.animal-category {
+  background-color: #1a202c21;
+}
+
+.breed {
+  padding-left: 2rem !important;
 }
 
 .wrapper h2 {
@@ -63,7 +71,7 @@ input {
   border-top-width: 0;
   list-style: none;
   margin-top: 0;
-  max-height: 143px;
+  max-height: 260px;
   overflow-y: auto;
   padding: 0;
 }

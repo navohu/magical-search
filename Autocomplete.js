@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AutoComplete = ({ animals }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -75,6 +76,55 @@ const AutoComplete = ({ animals }) => {
               // The animal category
               <>
                 <li
+                  className={(className, 'animal-category')}
+                  key={animal.category}
+                  onClick={onClick}
+                >
+                  {animal.category}
+                </li>
+
+                <ul class="suggestions">
+                  {animal.breeds.map((breed, index) => {
+                    let className;
+
+                    // Flag the active suggestion with a class
+                    if (index === activeSuggestionIndex) {
+                      className = 'suggestion-active';
+                    }
+                    // The breeds
+                    return (
+                      <li
+                        className={(className, 'breed')}
+                        key={breed}
+                        onClick={onClick}
+                      >
+                        {breed}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            );
+          })}
+        </ul>
+      );
+    }
+
+    return filteredSuggestions.length ? (
+      <ul class="suggestions">
+        {filteredSuggestions.map((animal, index) => {
+          let className;
+
+          // Flag the active suggestion with a class
+          if (index === activeSuggestionIndex) {
+            className = 'suggestion-active';
+          }
+
+          return (
+            // The animal category
+            animal.breeds.length ? (
+              <>
+                <li
                   className={className}
                   key={animal.category}
                   onClick={onClick}
@@ -92,36 +142,18 @@ const AutoComplete = ({ animals }) => {
                     }
                     // The breeds
                     return (
-                      <li className={className} key={breed} onClick={onClick}>
+                      <li
+                        className={(className, 'breed')}
+                        key={breed}
+                        onClick={onClick}
+                      >
                         {breed}
                       </li>
                     );
                   })}
                 </ul>
               </>
-            );
-          })}
-        </ul>
-      );
-    }
-    console.log(filteredSuggestions);
-    return filteredSuggestions.length ? (
-      <ul class="suggestions">
-        {filteredSuggestions.map((animal, index) => {
-          let className;
-
-          // Flag the active suggestion with a class
-          if (index === activeSuggestionIndex) {
-            className = 'suggestion-active';
-          }
-
-          return (
-            // The animal category
-            <>
-              <li className={className} key={animal.category} onClick={onClick}>
-                {animal.category}
-              </li>
-
+            ) : (
               <ul class="suggestions">
                 {animal.breeds.map((breed, index) => {
                   let className;
@@ -132,13 +164,17 @@ const AutoComplete = ({ animals }) => {
                   }
                   // The breeds
                   return (
-                    <li className={className} key={breed} onClick={onClick}>
+                    <li
+                      className={(className, 'breed')}
+                      key={breed}
+                      onClick={onClick}
+                    >
                       {breed}
                     </li>
                   );
                 })}
               </ul>
-            </>
+            )
           );
         })}
       </ul>
