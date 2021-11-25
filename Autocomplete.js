@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
+var _ = require('lodash');
+import { Filter } from 'react-lodash';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AutoComplete = ({ animals }) => {
@@ -59,127 +61,84 @@ const AutoComplete = ({ animals }) => {
     }
   };
 
-  const SuggestionsListComponent = () => {
-    if (!input.length) {
-      console.log(animals);
-      return (
+  const CategoriesSearchResult = ({ animal }) => {
+    return (
+      // The animal category
+      animal.breeds.length ? (
+        <>
+          <li class="animal-category" key={animal.category} onClick={onClick}>
+            {animal.category}
+          </li>
+
+          <ul class="suggestions">
+            {animal.breeds.map((breed, index) => {
+              let className;
+
+              // Flag the active suggestion with a class
+              if (index === activeSuggestionIndex) {
+                className = 'suggestion-active';
+              }
+              // The breeds
+              return (
+                <li
+                  className={(className, 'breed')}
+                  key={breed}
+                  onClick={onClick}
+                >
+                  {breed}
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      ) : (
         <ul class="suggestions">
-          {animals.map((animal, index) => {
+          {animal.breeds.map((breed, index) => {
             let className;
 
             // Flag the active suggestion with a class
             if (index === activeSuggestionIndex) {
               className = 'suggestion-active';
             }
+            // The breeds
+            return (
+              <li
+                className={(className, 'breed')}
+                key={breed}
+                onClick={onClick}
+              >
+                {breed}
+              </li>
+            );
+          })}
+        </ul>
+      )
+    );
+  };
 
+  const SuggestionsListComponent = () => {
+    if (!input.length) {
+      console.log(animals);
+      return (
+        <ul class="suggestions">
+          {animals.map((animal, index) => {
             return (
               // The animal category
-              <>
-                <li
-                  className={(className, 'animal-category')}
-                  key={animal.category}
-                  onClick={onClick}
-                >
-                  {animal.category}
-                </li>
-
-                <ul class="suggestions">
-                  {animal.breeds.map((breed, index) => {
-                    let className;
-
-                    // Flag the active suggestion with a class
-                    if (index === activeSuggestionIndex) {
-                      className = 'suggestion-active';
-                    }
-                    // The breeds
-                    return (
-                      <li
-                        className={(className, 'breed')}
-                        key={breed}
-                        onClick={onClick}
-                      >
-                        {breed}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
+              <CategoriesSearchResult animal={animal} />
             );
           })}
         </ul>
       );
     }
 
-    return filteredSuggestions.length ? (
+    return _.filter(filteredSuggestions, (x) => x.breeds.length).length ? (
       <ul class="suggestions">
-        {filteredSuggestions.map((animal, index) => {
-          let className;
-
-          // Flag the active suggestion with a class
-          if (index === activeSuggestionIndex) {
-            className = 'suggestion-active';
-          }
-
-          return (
-            // The animal category
-            animal.breeds.length ? (
-              <>
-                <li
-                  className={className}
-                  key={animal.category}
-                  onClick={onClick}
-                >
-                  {animal.category}
-                </li>
-
-                <ul class="suggestions">
-                  {animal.breeds.map((breed, index) => {
-                    let className;
-
-                    // Flag the active suggestion with a class
-                    if (index === activeSuggestionIndex) {
-                      className = 'suggestion-active';
-                    }
-                    // The breeds
-                    return (
-                      <li
-                        className={(className, 'breed')}
-                        key={breed}
-                        onClick={onClick}
-                      >
-                        {breed}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            ) : (
-              <ul class="suggestions">
-                {animal.breeds.map((breed, index) => {
-                  let className;
-
-                  // Flag the active suggestion with a class
-                  if (index === activeSuggestionIndex) {
-                    className = 'suggestion-active';
-                  }
-                  // The breeds
-                  return (
-                    <li
-                      className={(className, 'breed')}
-                      key={breed}
-                      onClick={onClick}
-                    >
-                      {breed}
-                    </li>
-                  );
-                })}
-              </ul>
-            )
-          );
+        {filteredSuggestions.map((animal) => {
+          return <CategoriesSearchResult animal={animal} />;
         })}
       </ul>
     ) : (
-      <div class="no-suggestions">
+      <div class="no-suggestions text-center">
         <span role="img">😪</span> <em> sorry no suggestions</em>
       </div>
     );

@@ -15,11 +15,17 @@ const animals = [
   },
   {
     category: '🐈 Cats',
-    breeds: ['Bengal'],
+    breeds: [
+      'Bengal',
+      'Ragdoll',
+      'Maine Coon',
+      'British Short Hair',
+      'Sphynx Cat',
+    ],
   },
   {
     category: '🐎 Horses',
-    breeds: ['Arabian', 'Iceland Pony'],
+    breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
   },
 ];
 
