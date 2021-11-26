@@ -53,66 +53,55 @@ const AutoComplete = ({ animals }) => {
     }
     // User pressed the down arrow
     else if (e.keyCode === 40) {
-      if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
-        return;
-      }
-
+      filteredSuggestions.map((animal) => {
+        if (activeSuggestionIndex - 1 === animal.breeds.length) {
+          return;
+        }
+      });
       setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
 
   const CategoriesSearchResult = ({ animal }) => {
+    const listOfBreeds = (
+      <ul class="suggestions">
+        {animal.breeds.map((breed, index) => {
+          let className;
+          
+          // Flag the active suggestion with a class
+          if (index === activeSuggestionIndex) {
+            console.log("Index: " + index)
+            console.log("Active sugg. index: " + activeSuggestionIndex)
+            className = 'suggestion-active';
+          }
+          // The breeds
+          return (
+            <li
+              className={className, 'breed'}
+              key={breed}
+              onClick={onClick}
+            >
+              {breed}
+            </li>
+          );
+        })}
+      </ul>
+    );
+
     return (
-      // The animal category
-      animal.breeds.length ? (
-        <>
-          <li class="animal-category" key={animal.category} onClick={onClick}>
-            {animal.category}
-          </li>
+      animal.breeds.length ? 
+          // Only include animal category if there are still results from the category
+          <>
+            <li class="animal-category" key={animal.category} onClick={onClick}>
+              {animal.category}
+            </li>
 
-          <ul class="suggestions">
-            {animal.breeds.map((breed, index) => {
-              let className;
-
-              // Flag the active suggestion with a class
-              if (index === activeSuggestionIndex) {
-                className = 'suggestion-active';
-              }
-              // The breeds
-              return (
-                <li
-                  className={(className, 'breed')}
-                  key={breed}
-                  onClick={onClick}
-                >
-                  {breed}
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      ) : (
-        <ul class="suggestions">
-          {animal.breeds.map((breed, index) => {
-            let className;
-
-            // Flag the active suggestion with a class
-            if (index === activeSuggestionIndex) {
-              className = 'suggestion-active';
-            }
-            // The breeds
-            return (
-              <li
-                className={(className, 'breed')}
-                key={breed}
-                onClick={onClick}
-              >
-                {breed}
-              </li>
-            );
-          })}
-        </ul>
-      )
+            {listOfBreeds}
+          </>
+          :
+          <>
+            {listOfBreeds}
+          </>
     );
   };
 
@@ -153,7 +142,9 @@ const AutoComplete = ({ animals }) => {
         onKeyDown={onKeyDown}
         value={input}
       />
-      {<SuggestionsListComponent />}
+      <div class="suggestion-list">
+        {<SuggestionsListComponent />}
+      </div>
     </>
   );
 };
