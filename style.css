@@ -8,6 +8,7 @@ body {
   font-family: verdana;
   line-height: 1.5;
   height: 100vh;
+  /* background-image: url('./background.png'); */
 }
 
 .wrapper {
