@@ -1,3 +1,5 @@
+@import '~bootstrap/scss/bootstrap';
+
 * {
   margin: 0;
   padding: 0;
@@ -33,9 +35,9 @@ body {
   margin-right: 1rem; */
 }
 
-.breed:last-child {
-  border-bottom: 0px;
-}
+// .breed:last-child {
+//   border-bottom: 0px;
+// }
 
 .suggestion-list {
   position: relative;
@@ -44,11 +46,14 @@ body {
   border-radius: 15px;
   background: linear-gradient(360deg, #cccccc 0%, hsl(0deg 0% 98%) 10%);
   min-width: 300px;
+  min-height: 300px;
+  max-height: 300px;
 }
 
 .breed-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .wrapper h2 {
@@ -112,52 +117,39 @@ input {
   font-weight: 700;
 }
 
-.search {
-  display: block;
-  position: relative;
-  height: 35px;
-  width: 35px;
-  box-sizing: border-box;
-  margin: 0px 8px 7px 0px;
-  padding: 7px 9px 0px 9px;
-  border: 3px solid #ffffff;
-  border-radius: 25px;
-  transition: all 200ms ease;
-  cursor: text;
+.tablist {
+  background-color: white;
+  font-size: 0.75rem;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
 
-  &:after {
-    content: '';
-    position: absolute;
-    width: 3px;
-    height: 20px;
-    right: -5px;
-    top: 21px;
-    background: #ffffff;
-    border-radius: 3px;
-    transform: rotate(-45deg);
-    transition: all 200ms ease;
-  }
+.tab-content {
+  max-height: 260px;
+  overflow-y: auto;
+}
 
-  &.active,
-  &:hover {
-    width: 300px;
-    margin-right: 0px;
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link,
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  border: 0;
+}
 
-    &:after {
-      height: 0px;
-    }
-  }
+.nav-tabs {
+  border-bottom: 0;
+}
 
-  // input {
-  //   width: 100%;
-  //   border: none;
-  //   box-sizing: border-box;
-  //   // font-family: Helvetica;
-  //   color: inherit;
-  //   background: transparent;
-  //   outline-width: 0px;
-  //   outline: none;
-  //   padding: 0 0.5rem;
-  //   font-size: 0.75rem;
-  // }
+.nav-link {
+  color: rgb(97, 89, 89);
+}
+
+.nav-link:hover {
+  color: none;
+}
+
+.nav-tabs .nav-link.active {
+  color: rgb(0, 132, 255);
+  border-radius: 15px;
 }

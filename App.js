@@ -1,20 +1,17 @@
-import React, { createElement, Component } from 'react';
-import algoliasearch from 'algoliasearch';
+import React, { Component } from 'react';
 import Autocomplete from './Autocomplete';
 import './style.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const appId = 'latency';
-const apiKey = '6be0576ff61c053d5f9a3225e2a90f76';
-const searchClient = algoliasearch(appId, apiKey);
-
 const animals = [
   {
-    category: '🐶 Dogs',
+    id: 'dogs',
+    category: 'Dogs',
     breeds: ['Chiuaua', 'Bulldog', 'Pitbull', 'Golden Retriever'],
   },
   {
-    category: '🐈 Cats',
+    id: 'cats',
+    category: 'Cats',
     breeds: [
       'Bengal',
       'Ragdoll',
@@ -24,7 +21,8 @@ const animals = [
     ],
   },
   {
-    category: '🐎 Horses',
+    id: 'horses',
+    category: 'Horses',
     breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
   },
 ];
