@@ -19,7 +19,8 @@ const AutoComplete = ({ animals }) => {
       return {
         category: animal.category,
         breeds: animal.breeds.filter(
-          (breed) => breed.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+          (breed) =>
+            breed.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         ),
       };
     });
@@ -36,7 +37,8 @@ const AutoComplete = ({ animals }) => {
       return {
         category: animal.category,
         breeds: animal.breeds.filter(
-          (breed) => breed.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+          (breed) =>
+            breed.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         ),
       };
     });
@@ -62,17 +64,26 @@ const AutoComplete = ({ animals }) => {
       setActiveSuggestionIndex(activeSuggestionIndex - 1);
     }
     // User pressed the down arrow
-    else if (e.keyCode === 40) {
+    else if (e.key === 'ArrowDown') {
       filteredSuggestions.map((animal) => {
         if (activeSuggestionIndex - 1 === animal.breeds.length) {
           return;
         }
       });
+      // filteredSuggestions.map((animal) => {
+      //   animal.map((breed) => {
+      //     if (breed.isActive) {
+      //       breed.isActive = false;
+      //     } else {
+      //       breed.isActive = true;
+      //     }
+      //   });
+      // });
       setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
 
-  const ListOfBreeds = ({ animal }) => {
+  const ListOfBreedsByCategory = ({ animal }) => {
     return (
       <ul class="breed-list">
         {animal.breeds.map((breed, index) => {
@@ -89,11 +100,44 @@ const AutoComplete = ({ animals }) => {
           return (
             <li
               className={(activeItemClassName, 'breed')}
-              key={breed}
+              key={breed.name}
               onClick={onClick}
             >
-              {breed}
+              {breed.name}
             </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  const AllBreeds = ({ results }) => {
+    return (
+      <ul class="breed-list">
+        {results.map((result) => {
+          return (
+            <>
+              {result.breeds.map((breed, index) => {
+                let activeItemClassName;
+
+                // Flag the active suggestion with a class
+                if (index === activeSuggestionIndex) {
+                  console.log('Index: ' + index);
+                  console.log('Active sugg. index: ' + activeSuggestionIndex);
+                  activeItemClassName = 'suggestion-active';
+                }
+                // The breeds
+                return (
+                  <li
+                    className={(activeItemClassName, 'breed')}
+                    key={breed.name + '-animal'}
+                    onClick={onClick}
+                  >
+                    {breed.name}
+                  </li>
+                );
+              })}
+            </>
           );
         })}
       </ul>
@@ -137,25 +181,6 @@ const AutoComplete = ({ animals }) => {
     );
   };
 
-  const ResultTabs = ({ results }) => {
-    return (
-      <>
-        <Tab eventKey="home" title="Home">
-          {results.map((result) => {
-            return <ListOfBreeds animal={result} />;
-          })}
-        </Tab>
-        {results.map((result) => {
-          return (
-            <Tab eventKey={result.id} title={result.category}>
-              <ListOfBreeds animal={result} />
-            </Tab>
-          );
-        })}
-      </>
-    );
-  };
-
   const NoResults = () => {
     return (
       <div class="no-suggestions text-center">
@@ -178,18 +203,17 @@ const AutoComplete = ({ animals }) => {
     } else {
       results = undefined;
     }
+    console.log(results);
 
     return (
       <Tabs defaultActiveKey="all" transition={true} className="tablist">
         <Tab eventKey="all" title="All">
-          {results.map((result) => {
-            return <ListOfBreeds animal={result} />;
-          })}
+          <AllBreeds results={results} />
         </Tab>
         {results.map((result) => {
           return (
             <Tab eventKey={result.id} title={result.category}>
-              <ListOfBreeds animal={result} />
+              <ListOfBreedsByCategory animal={result} />
             </Tab>
           );
         })}

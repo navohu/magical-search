@@ -7,23 +7,49 @@ const animals = [
   {
     id: 'dogs',
     category: 'Dogs',
-    breeds: ['Chiuaua', 'Bulldog', 'Pitbull', 'Golden Retriever'],
+    // breeds: ['Chiuaua', 'Bulldog', 'Pitbull', 'Golden Retriever'],
+    breeds: [
+      {
+        name: 'Chiuaua',
+        isActive: false,
+        size: "Small"
+      },
+      {
+        name: 'Bulldog',
+        isActive: false,
+        size: "Small"
+      }
+    ]
   },
   {
     id: 'cats',
     category: 'Cats',
     breeds: [
-      'Bengal',
-      'Ragdoll',
-      'Maine Coon',
-      'British Short Hair',
-      'Sphynx Cat',
-    ],
+      {
+        name: 'Bengal',
+        isActive: false,
+        size: "Small"
+      }
+    ]
+    // breeds: [
+    //   'Bengal',
+    //   'Ragdoll',
+    //   'Maine Coon',
+    //   'British Short Hair',
+    //   'Sphynx Cat',
+    // ],
   },
   {
     id: 'horses',
     category: 'Horses',
-    breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
+    breeds: [
+      {
+        name: 'Arabian',
+        isActive: false,
+        size: "Small"
+      }
+    ]
+    // breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
   },
 ];
 
