@@ -1,7 +1,7 @@
 import React, { createElement, Component } from 'react';
 import algoliasearch from 'algoliasearch';
 import Autocomplete from './Autocomplete';
-import './style.css';
+import './style.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const appId = 'latency';
@@ -32,9 +32,9 @@ const animals = [
 class App extends Component {
   render() {
     return (
-      <div className="wrapper">
-        <h1 class="pt-3 pb-3">Magical Search</h1>
-        <div class="autocomplete">
+      <div className="wrapper h-100 d-flex align-items-center justify-content-center">
+        {/* <h1 class="pt-3 pb-3">Magical Search</h1> */}
+        <div class="pt-3 autocomplete">
           <Autocomplete animals={animals} />
         </div>
       </div>

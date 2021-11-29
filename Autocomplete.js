@@ -64,7 +64,7 @@ const AutoComplete = ({ animals }) => {
 
   const CategoriesSearchResult = ({ animal }) => {
     const listOfBreeds = (
-      <ul class="suggestions">
+      <ul class="breed-list">
         {animal.breeds.map((breed, index) => {
           let className;
           
@@ -137,11 +137,17 @@ const AutoComplete = ({ animals }) => {
     <>
       <input
         type="text"
-        placeholder="Type a command or search..."
+        placeholder="🔍 Type a command or search..."
         onChange={onChange}
         onKeyDown={onKeyDown}
         value={input}
       />
+      {/* <label class="search" for="inpt_search">
+        <input id="inpt_search" type="text"
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        value={input}/>
+      </label> */}
       <div class="suggestion-list">
         {<SuggestionsListComponent />}
       </div>
