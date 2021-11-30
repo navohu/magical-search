@@ -9,6 +9,7 @@ const AutoComplete = ({ countries, categories }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState(countries);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [input, setInput] = useState('');
+  const [tab, setTab] = useState('all');
 
   const onChange = (e) => {
     const userInput = e.target.value;
@@ -27,7 +28,12 @@ const AutoComplete = ({ countries, categories }) => {
   };
 
   const onClick = (e) => {
-    const userInput = e.target.innerText;
+    let userInput;
+    if (e.target.children.length > 1) {
+      userInput = e.target.children[0].innerText;
+    } else {
+      userInput = e.target.parentElement.children[0].innerText;
+    }
     const foundElement = countries.filter(
       (country) =>
         country.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
@@ -40,7 +46,12 @@ const AutoComplete = ({ countries, categories }) => {
   const onKeyDown = (e) => {
     // User pressed the enter key
     if (e.keyCode === 13) {
-      setInput(filteredSuggestions[activeSuggestionIndex].name);
+      const foundElement = _.find(
+        countries,
+        (country, index) => index === activeSuggestionIndex
+      );
+      setInput(foundElement.name);
+      setFilteredSuggestions([foundElement]);
       setActiveSuggestionIndex(0);
     }
     // User pressed the up arrow
@@ -62,7 +73,7 @@ const AutoComplete = ({ countries, categories }) => {
 
   const CountryList = ({ results }) => {
     return (
-      <ul class="country-list">
+      <ul class="country__list">
         {results.map((result, index) => {
           let activeItemClassName;
 
@@ -79,8 +90,8 @@ const AutoComplete = ({ countries, categories }) => {
               key={result.name}
               onClick={onClick}
             >
-              {result.name}
-              <span className="country--category">
+              <span>{result.name}</span>
+              <span className={`country--category country--${result.category}`}>
                 {
                   _.find(
                     categories,
@@ -119,7 +130,7 @@ const AutoComplete = ({ countries, categories }) => {
     }
 
     return (
-      <Tabs className="tablist" onSelect={(key, ev) => console.log(ev)}>
+      <Tabs className="tablist" onSelect={(k) => setTab(k)} activeKey={tab}>
         <Tab eventKey="all" title="All">
           <CountryList results={results} />
         </Tab>
@@ -147,7 +158,7 @@ const AutoComplete = ({ countries, categories }) => {
         onKeyDown={onKeyDown}
         value={input}
       />
-      <div class="suggestion-list">{<TabListComponent />}</div>
+      <div class="country__container">{<TabListComponent />}</div>
     </>
   );
 };

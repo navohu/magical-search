@@ -20,6 +20,11 @@ const categories = [
 
 const countries = [
   {
+    name: 'Israel',
+    size: 'Small',
+    category: 'middle-east',
+  },
+  {
     name: 'Norway',
     size: 'Small',
     category: 'europe',
@@ -30,19 +35,24 @@ const countries = [
     category: 'europe',
   },
   {
+    name: 'Nigeria',
+    size: 'Medium',
+    category: 'africa',
+  },
+  {
     name: 'United Kingdom',
     size: 'Small',
     category: 'europe',
   },
   {
+    name: 'Qatar',
+    size: 'Small',
+    category: 'middle-east',
+  },
+  {
     name: 'Croatia',
     size: 'Tall',
     category: 'europe',
-  },
-  {
-    name: 'Nigeria',
-    size: 'Medium',
-    category: 'africa',
   },
   {
     name: 'Lesotho',
@@ -55,11 +65,6 @@ const countries = [
     category: 'africa',
   },
   {
-    name: 'Israel',
-    size: 'Small',
-    category: 'middle-east',
-  },
-  {
     name: 'Iran',
     size: 'Small',
     category: 'middle-east',
@@ -69,11 +74,6 @@ const countries = [
     size: 'Medium',
     category: 'middle-east',
   },
-  {
-    name: 'Qatar',
-    size: 'Small',
-    category: 'middle-east',
-  }
 ];
 
 class App extends Component {
