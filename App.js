@@ -5,76 +5,76 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const categories = [
   {
-    id: 'dogs',
-    name: 'Dogs',
+    id: 'europe',
+    name: 'Europe',
   },
   {
-    id: 'cats',
-    name: 'Cats',
+    id: 'africa',
+    name: 'Africa',
   },
   {
-    id: 'horses',
-    name: 'Horses',
-  },
+    id: 'middle-east',
+    name: 'Middle East',
+  }
 ];
 
-const animals = [
+const countries = [
   {
-    name: 'Chiuaua',
-    isActive: false,
+    name: 'Norway',
     size: 'Small',
-    category: 'dogs',
+    category: 'europe',
   },
   {
-    name: 'Bulldog',
-    isActive: false,
-    size: 'Small',
-    category: 'dogs',
+    name: 'Italy',
+    size: 'Medium',
+    category: 'europe',
   },
   {
-    name: 'Bengal',
-    isActive: false,
+    name: 'United Kingdom',
     size: 'Small',
-    category: 'cats',
+    category: 'europe',
   },
   {
-    name: 'Arabian',
-    isActive: false,
-    size: 'Small',
-    category: 'horses',
+    name: 'Croatia',
+    size: 'Tall',
+    category: 'europe',
   },
+  {
+    name: 'Nigeria',
+    size: 'Medium',
+    category: 'africa',
+  },
+  {
+    name: 'Lesotho',
+    size: 'Large',
+    category: 'africa',
+  },
+  {
+    name: 'South Africa',
+    size: 'Medium',
+    category: 'africa',
+  },
+  {
+    name: 'Israel',
+    size: 'Small',
+    category: 'middle-east',
+  },
+  {
+    name: 'Iran',
+    size: 'Small',
+    category: 'middle-east',
+  },
+  {
+    name: 'United Arab Emirates',
+    size: 'Medium',
+    category: 'middle-east',
+  },
+  {
+    name: 'Qatar',
+    size: 'Small',
+    category: 'middle-east',
+  }
 ];
-// {
-//   id: 'cats',
-//   category: 'Cats',
-//   breeds: [
-//     {
-//       name: 'Bengal',
-//       isActive: false,
-//       size: "Small"
-//     }
-//   ]
-//   // breeds: [
-//   //   'Bengal',
-//   //   'Ragdoll',
-//   //   'Maine Coon',
-//   //   'British Short Hair',
-//   //   'Sphynx Cat',
-//   // ],
-// },
-// {
-//   id: 'horses',
-//   category: 'Horses',
-//   breeds: [
-//     {
-//       name: 'Arabian',
-//       isActive: false,
-//       size: "Small"
-//     }
-//   ]
-//   // breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
-// }
-// ];
 
 class App extends Component {
   render() {
@@ -82,7 +82,7 @@ class App extends Component {
       <div className="wrapper h-100 d-flex align-items-center justify-content-center">
         {/* <h1 class="pt-3 pb-3">Magical Search</h1> */}
         <div class="pt-3 autocomplete">
-          <Autocomplete animals={animals} categories={categories} />
+          <Autocomplete countries={countries} categories={categories} />
         </div>
       </div>
     );

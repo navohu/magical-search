@@ -5,9 +5,9 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 var _ = require('lodash');
 
-const AutoComplete = ({ animals, categories }) => {
-  const [filteredSuggestions, setFilteredSuggestions] = useState(animals);
-  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
+const AutoComplete = ({ countries, categories }) => {
+  const [filteredSuggestions, setFilteredSuggestions] = useState(countries);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [input, setInput] = useState('');
 
   const onChange = (e) => {
@@ -15,26 +15,26 @@ const AutoComplete = ({ animals, categories }) => {
 
     // Filter our suggestions that don't contain the user's input
     const unLinked = [];
-    animals.filter((animal) => {
-      if (animal.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1) {
-        unLinked.push(animal);
+    countries.filter((country) => {
+      if (country.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1) {
+        unLinked.push(country);
       }
     });
 
     setInput(userInput);
     setFilteredSuggestions(unLinked);
-    setActiveSuggestionIndex(0);
+    setActiveSuggestionIndex(-1);
   };
 
   const onClick = (e) => {
     const userInput = e.target.innerText;
-    const foundElement = animals.filter(
-      (animal) =>
-        animal.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    const foundElement = countries.filter(
+      (country) =>
+        country.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
     setFilteredSuggestions(foundElement);
     setInput(userInput);
-    setActiveSuggestionIndex(0);
+    setActiveSuggestionIndex(-1);
   };
 
   const onKeyDown = (e) => {
@@ -45,7 +45,7 @@ const AutoComplete = ({ animals, categories }) => {
     }
     // User pressed the up arrow
     else if (e.keyCode === 38) {
-      if (activeSuggestionIndex === 0) {
+      if (activeSuggestionIndex === -1) {
         return;
       }
 
@@ -53,35 +53,41 @@ const AutoComplete = ({ animals, categories }) => {
     }
     // User pressed the down arrow
     else if (e.key === 'ArrowDown') {
-      // if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
-      //   return;
-      // }
+      if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
+        return;
+      }
       setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
 
-  const AnimalList = ({ results }) => {
+  const CountryList = ({ results }) => {
     return (
-      <ul class="breed-list">
+      <ul class="country-list">
         {results.map((result, index) => {
           let activeItemClassName;
 
           // Flag the active suggestion with a class
           if (index === activeSuggestionIndex) {
-            console.log('Index: ' + index);
-            console.log('Active sugg. index: ' + activeSuggestionIndex);
             activeItemClassName = 'suggestion-active';
           }
-          // The breeds
+
           return (
             <li
               className={`${
                 activeItemClassName ? activeItemClassName : ''
-              } breed`}
+              } country`}
               key={result.name}
               onClick={onClick}
             >
               {result.name}
+              <span className="country--category">
+                {
+                  _.find(
+                    categories,
+                    (category) => category.id === result.category
+                  ).name
+                }
+              </span>
             </li>
           );
         })}
@@ -101,7 +107,7 @@ const AutoComplete = ({ animals, categories }) => {
     let results;
 
     if (!input.length) {
-      results = animals;
+      results = countries;
     } else if (filteredSuggestions.length) {
       results = filteredSuggestions;
     } else {
@@ -115,16 +121,16 @@ const AutoComplete = ({ animals, categories }) => {
     return (
       <Tabs className="tablist" onSelect={(key, ev) => console.log(ev)}>
         <Tab eventKey="all" title="All">
-          <AnimalList results={results} />
+          <CountryList results={results} />
         </Tab>
         {categories.map((category) => {
-          const filteredAnimalsByCategory = _.filter(
+          const filteredByCategory = _.filter(
             results,
             (result) => result.category === category.id
           );
           return (
             <Tab eventKey={category.id} title={category.name}>
-              <AnimalList results={filteredAnimalsByCategory} />
+              <CountryList results={filteredByCategory} />
             </Tab>
           );
         })}

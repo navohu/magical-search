@@ -25,19 +25,12 @@ body {
   background-color: #1a202c21;
 }
 
-.breed {
-  /* padding-left: 2rem !important; */
+.country {
   border-bottom: solid #cccccc 1px;
   padding: 0.5rem;
   font-size: 0.6rem;
   font-weight: 500;
-  /* margin-left: 1rem;
-  margin-right: 1rem; */
 }
-
-// .breed:last-child {
-//   border-bottom: 0px;
-// }
 
 .suggestion-list {
   position: relative;
@@ -50,7 +43,7 @@ body {
   max-height: 300px;
 }
 
-.breed-list {
+.country-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -85,6 +78,21 @@ input {
   color: #999;
   padding: 0.4rem;
   font-size: 0.6rem;
+}
+
+.country {
+  &--category {
+    min-width: 2rem;
+    max-width: 4rem;
+    margin-left: 0.5rem;
+    color: white;
+    font-size: 0.5rem;
+    background-color: rgb(194, 194, 194);
+    border-radius: 5px;
+    padding: 3px;
+    display: inline-flex;
+    justify-content: center;
+  }
 }
 
 .suggestions {
