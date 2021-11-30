@@ -5,8 +5,8 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 var _ = require('lodash');
 
-const AutoComplete = ({ animals }) => {
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+const AutoComplete = ({ animals, categories }) => {
+  const [filteredSuggestions, setFilteredSuggestions] = useState(animals);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [input, setInput] = useState('');
@@ -15,14 +15,11 @@ const AutoComplete = ({ animals }) => {
     const userInput = e.target.value;
 
     // Filter our suggestions that don't contain the user's input
-    const unLinked = animals.map((animal) => {
-      return {
-        category: animal.category,
-        breeds: animal.breeds.filter(
-          (breed) =>
-            breed.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-        ),
-      };
+    const unLinked = [];
+    animals.filter((animal) => {
+      if (animal.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1) {
+        unLinked.push(animal);
+      }
     });
 
     setInput(userInput);
@@ -51,7 +48,7 @@ const AutoComplete = ({ animals }) => {
   const onKeyDown = (e) => {
     // User pressed the enter key
     if (e.keyCode === 13) {
-      setInput(filteredSuggestions[activeSuggestionIndex]);
+      setInput(filteredSuggestions[activeSuggestionIndex].name);
       setActiveSuggestionIndex(0);
       setShowSuggestions(false);
     }
@@ -65,28 +62,26 @@ const AutoComplete = ({ animals }) => {
     }
     // User pressed the down arrow
     else if (e.key === 'ArrowDown') {
-      filteredSuggestions.map((animal) => {
-        if (activeSuggestionIndex - 1 === animal.breeds.length) {
-          return;
-        }
-      });
-      // filteredSuggestions.map((animal) => {
-      //   animal.map((breed) => {
-      //     if (breed.isActive) {
-      //       breed.isActive = false;
-      //     } else {
-      //       breed.isActive = true;
-      //     }
-      //   });
-      // });
+      // if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
+      //   return;
+      // }
       setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
 
-  const ListOfBreedsByCategory = ({ animal }) => {
+  const ListOfBreedsByCategory = ({ results, category }) => {
+    const filteredAnimalsByCategory = _.filter(
+      results,
+      (result) => result.category === category.id
+    );
+
+    return <AnimalList results={filteredAnimalsByCategory} />;
+  };
+
+  const AnimalList = ({ results }) => {
     return (
       <ul class="breed-list">
-        {animal.breeds.map((breed, index) => {
+        {results.map((result, index) => {
           let activeItemClassName;
 
           // Flag the active suggestion with a class
@@ -95,49 +90,17 @@ const AutoComplete = ({ animals }) => {
             console.log('Active sugg. index: ' + activeSuggestionIndex);
             activeItemClassName = 'suggestion-active';
           }
-          console.log(activeItemClassName);
           // The breeds
           return (
             <li
-              className={(activeItemClassName, 'breed')}
-              key={breed.name}
+              className={`${
+                activeItemClassName ? activeItemClassName : ''
+              } breed`}
+              key={result.name}
               onClick={onClick}
             >
-              {breed.name}
+              {result.name}
             </li>
-          );
-        })}
-      </ul>
-    );
-  };
-
-  const AllBreeds = ({ results }) => {
-    return (
-      <ul class="breed-list">
-        {results.map((result) => {
-          return (
-            <>
-              {result.breeds.map((breed, index) => {
-                let activeItemClassName;
-
-                // Flag the active suggestion with a class
-                if (index === activeSuggestionIndex) {
-                  console.log('Index: ' + index);
-                  console.log('Active sugg. index: ' + activeSuggestionIndex);
-                  activeItemClassName = 'suggestion-active';
-                }
-                // The breeds
-                return (
-                  <li
-                    className={(activeItemClassName, 'breed')}
-                    key={breed.name + '-animal'}
-                    onClick={onClick}
-                  >
-                    {breed.name}
-                  </li>
-                );
-              })}
-            </>
           );
         })}
       </ul>
@@ -191,29 +154,32 @@ const AutoComplete = ({ animals }) => {
 
   const TabListComponent = () => {
     let results;
-    const filteredSuggestionsLength = _.filter(
-      filteredSuggestions,
-      (x) => x.breeds.length
-    ).length;
 
     if (!input.length) {
       results = animals;
-    } else if (filteredSuggestionsLength) {
+    } else if (filteredSuggestions.length) {
       results = filteredSuggestions;
     } else {
       results = undefined;
     }
-    console.log(results);
+
+    if (!results) {
+      return <NoResults />;
+    }
 
     return (
       <Tabs defaultActiveKey="all" transition={true} className="tablist">
         <Tab eventKey="all" title="All">
-          <AllBreeds results={results} />
+          <AnimalList results={results} />
         </Tab>
-        {results.map((result) => {
+        {categories.map((category, index) => {
+          const filteredAnimalsByCategory = _.filter(
+            results,
+            (result) => result.category === category.id
+          );
           return (
-            <Tab eventKey={result.id} title={result.category}>
-              <ListOfBreedsByCategory animal={result} />
+            <Tab eventKey={category.id} title={category.name}>
+              <AnimalList results={filteredAnimalsByCategory} />
             </Tab>
           );
         })}

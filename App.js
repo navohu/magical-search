@@ -3,55 +3,78 @@ import Autocomplete from './Autocomplete';
 import './style.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const animals = [
+const categories = [
   {
     id: 'dogs',
-    category: 'Dogs',
-    // breeds: ['Chiuaua', 'Bulldog', 'Pitbull', 'Golden Retriever'],
-    breeds: [
-      {
-        name: 'Chiuaua',
-        isActive: false,
-        size: "Small"
-      },
-      {
-        name: 'Bulldog',
-        isActive: false,
-        size: "Small"
-      }
-    ]
+    name: 'Dogs',
   },
   {
     id: 'cats',
-    category: 'Cats',
-    breeds: [
-      {
-        name: 'Bengal',
-        isActive: false,
-        size: "Small"
-      }
-    ]
-    // breeds: [
-    //   'Bengal',
-    //   'Ragdoll',
-    //   'Maine Coon',
-    //   'British Short Hair',
-    //   'Sphynx Cat',
-    // ],
+    name: 'Cats',
   },
   {
     id: 'horses',
-    category: 'Horses',
-    breeds: [
-      {
-        name: 'Arabian',
-        isActive: false,
-        size: "Small"
-      }
-    ]
-    // breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
+    name: 'Horses',
   },
 ];
+
+const animals = [
+  {
+    name: 'Chiuaua',
+    isActive: false,
+    size: 'Small',
+    category: 'dogs',
+  },
+  {
+    name: 'Bulldog',
+    isActive: false,
+    size: 'Small',
+    category: 'dogs',
+  },
+  {
+    name: 'Bengal',
+    isActive: false,
+    size: 'Small',
+    category: 'cats',
+  },
+  {
+    name: 'Arabian',
+    isActive: false,
+    size: 'Small',
+    category: 'horses',
+  },
+];
+// {
+//   id: 'cats',
+//   category: 'Cats',
+//   breeds: [
+//     {
+//       name: 'Bengal',
+//       isActive: false,
+//       size: "Small"
+//     }
+//   ]
+//   // breeds: [
+//   //   'Bengal',
+//   //   'Ragdoll',
+//   //   'Maine Coon',
+//   //   'British Short Hair',
+//   //   'Sphynx Cat',
+//   // ],
+// },
+// {
+//   id: 'horses',
+//   category: 'Horses',
+//   breeds: [
+//     {
+//       name: 'Arabian',
+//       isActive: false,
+//       size: "Small"
+//     }
+//   ]
+//   // breeds: ['Arabian', 'Iceland Pony', 'Friesian Horse', 'Shetland Pony'],
+// }
+// ];
 
 class App extends Component {
   render() {
@@ -59,7 +82,7 @@ class App extends Component {
       <div className="wrapper h-100 d-flex align-items-center justify-content-center">
         {/* <h1 class="pt-3 pb-3">Magical Search</h1> */}
         <div class="pt-3 autocomplete">
-          <Autocomplete animals={animals} />
+          <Autocomplete animals={animals} categories={categories} />
         </div>
       </div>
     );
