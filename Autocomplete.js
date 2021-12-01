@@ -11,19 +11,23 @@ const AutoComplete = ({ countries, categories }) => {
   const [input, setInput] = useState('');
   const [tab, setTab] = useState('all');
 
+  function resetInput() {
+    setInput('');
+  }
+
   const onChange = (e) => {
     const userInput = e.target.value;
 
     // Filter our suggestions that don't contain the user's input
-    const unLinked = [];
+    const filteredList = [];
     countries.filter((country) => {
       if (country.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1) {
-        unLinked.push(country);
+        filteredList.push(country);
       }
     });
 
     setInput(userInput);
-    setFilteredSuggestions(unLinked);
+    setFilteredSuggestions(filteredList);
     setActiveSuggestionIndex(-1);
   };
 
@@ -72,6 +76,9 @@ const AutoComplete = ({ countries, categories }) => {
   };
 
   const CountryList = ({ results }) => {
+    if (!results || !results.length) {
+      return <NoResults />;
+    }
     return (
       <ul class="country__list">
         {results.map((result, index) => {
@@ -125,10 +132,6 @@ const AutoComplete = ({ countries, categories }) => {
       results = undefined;
     }
 
-    if (!results) {
-      return <NoResults />;
-    }
-
     return (
       <Tabs className="tablist" onSelect={(k) => setTab(k)} activeKey={tab}>
         <Tab eventKey="all" title="All">
@@ -139,6 +142,7 @@ const AutoComplete = ({ countries, categories }) => {
             results,
             (result) => result.category === category.id
           );
+
           return (
             <Tab eventKey={category.id} title={category.name}>
               <CountryList results={filteredByCategory} />
@@ -151,13 +155,18 @@ const AutoComplete = ({ countries, categories }) => {
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Type a command or search..."
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        value={input}
-      />
+      <div class="input__wrapper">
+        <input
+          type="text"
+          placeholder="Type a command or search..."
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          value={input}
+        ></input>
+        <span class="input--clear" onClick={resetInput}>
+          &times;
+        </span>
+      </div>
       <div class="country__container">{<TabListComponent />}</div>
     </>
   );
