@@ -1,8 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState } from 'react';
 import React from 'react';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import { BsSearch, BsX } from 'react-icons/bs';
 var _ = require('lodash');
 
 const AutoComplete = ({ countries, categories }) => {
@@ -51,7 +53,7 @@ const AutoComplete = ({ countries, categories }) => {
     // User pressed the enter key
     if (e.keyCode === 13) {
       const foundElement = _.find(
-        countries,
+        filteredSuggestions,
         (country, index) => index === activeSuggestionIndex
       );
       setInput(foundElement.name);
@@ -158,13 +160,13 @@ const AutoComplete = ({ countries, categories }) => {
       <div class="input__wrapper">
         <input
           type="text"
-          placeholder="Type a command or search..."
+          placeholder="Type to see the magic..."
           onChange={onChange}
           onKeyDown={onKeyDown}
           value={input}
         ></input>
-        <span class="input--clear" onClick={resetInput}>
-          &times;
+        <span class="input--clear" onClick={!input ? undefined : resetInput}>
+          {!input ? <BsSearch /> : <BsX />}
         </span>
       </div>
       <div class="country__container">{<TabListComponent />}</div>
