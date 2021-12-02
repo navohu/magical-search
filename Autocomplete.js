@@ -10,7 +10,6 @@ var _ = require('lodash');
 const AutoComplete = ({ countries, categories }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState(countries);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [show, setShow] = useState(false);
   const [input, setInput] = useState('');
   const [autocompleteInput, setAutocompleteInput] = useState('');
   const [tab, setTab] = useState('all');
@@ -94,9 +93,6 @@ const AutoComplete = ({ countries, categories }) => {
   };
 
   const CountryList = ({ results }) => {
-    setTimeout(function () {
-      setShow(true);
-    }, 2000);
     if (!results || !results.length) {
       return <NoResults />;
     }
@@ -112,8 +108,8 @@ const AutoComplete = ({ countries, categories }) => {
 
           return (
             <li
-              className={`${activeItemClassName ? activeItemClassName : ''} ${
-                show ? 'show' : undefined
+              className={`${
+                activeItemClassName ? activeItemClassName : ''
               } country`}
               key={result.name}
               onClick={onClick}
