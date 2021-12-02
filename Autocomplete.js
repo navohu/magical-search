@@ -10,11 +10,14 @@ var _ = require('lodash');
 const AutoComplete = ({ countries, categories }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState(countries);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const [show, setShow] = useState(false);
   const [input, setInput] = useState('');
+  const [autocompleteInput, setAutocompleteInput] = useState('');
   const [tab, setTab] = useState('all');
 
   function resetInput() {
     setInput('');
+    setFilteredSuggestions(countries);
   }
 
   const onChange = (e) => {
@@ -28,7 +31,16 @@ const AutoComplete = ({ countries, categories }) => {
       }
     });
 
+    const firstOption = filteredList[0];
+
+    if (firstOption) {
+      setAutocompleteInput(
+        firstOption.name.toLowerCase().replace(userInput.toLowerCase(), '')
+      );
+    }
+
     setInput(userInput);
+    console.log(autocompleteInput);
     setFilteredSuggestions(filteredList);
     setActiveSuggestionIndex(-1);
   };
@@ -51,23 +63,27 @@ const AutoComplete = ({ countries, categories }) => {
 
   const onKeyDown = (e) => {
     // User pressed the enter key
-    if (e.keyCode === 13) {
-      const foundElement = _.find(
-        filteredSuggestions,
-        (country, index) => index === activeSuggestionIndex
-      );
+    if (e.key === 'Enter') {
+      const foundElement = filteredSuggestions[activeSuggestionIndex];
       setInput(foundElement.name);
       setFilteredSuggestions([foundElement]);
-      setActiveSuggestionIndex(0);
+      setActiveSuggestionIndex(-1);
     }
     // User pressed the up arrow
-    else if (e.keyCode === 38) {
+    else if (e.key === 'ArrowUp') {
       if (activeSuggestionIndex === -1) {
         return;
       }
 
       setActiveSuggestionIndex(activeSuggestionIndex - 1);
     }
+    // user pressed the tab key - returns first element
+    else if (e.key === 'Tab' && filteredSuggestions) {
+      setInput(filteredSuggestions[0].name);
+      setFilteredSuggestions([filteredSuggestions[0]]);
+      setActiveSuggestionIndex(-1);
+    }
+
     // User pressed the down arrow
     else if (e.key === 'ArrowDown') {
       if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
@@ -78,6 +94,9 @@ const AutoComplete = ({ countries, categories }) => {
   };
 
   const CountryList = ({ results }) => {
+    setTimeout(function () {
+      setShow(true);
+    }, 2000);
     if (!results || !results.length) {
       return <NoResults />;
     }
@@ -93,8 +112,8 @@ const AutoComplete = ({ countries, categories }) => {
 
           return (
             <li
-              className={`${
-                activeItemClassName ? activeItemClassName : ''
+              className={`${activeItemClassName ? activeItemClassName : ''} ${
+                show ? 'show' : undefined
               } country`}
               key={result.name}
               onClick={onClick}
@@ -126,9 +145,7 @@ const AutoComplete = ({ countries, categories }) => {
   const TabListComponent = () => {
     let results;
 
-    if (!input.length) {
-      results = countries;
-    } else if (filteredSuggestions.length) {
+    if (filteredSuggestions.length) {
       results = filteredSuggestions;
     } else {
       results = undefined;
@@ -164,6 +181,7 @@ const AutoComplete = ({ countries, categories }) => {
           onChange={onChange}
           onKeyDown={onKeyDown}
           value={input}
+          autoComplete="on"
         ></input>
         <span class="input--clear" onClick={!input ? undefined : resetInput}>
           {!input ? <BsSearch /> : <BsX />}
