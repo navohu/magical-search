@@ -145,13 +145,23 @@ input {
 }
 
 @keyframes openModal {
-  0% { width: 0; }
-  // 100% { width: 100%; }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes closeModal {
-  0% { width: 33.333%; }
-  100% { width: 0;}
+  0% {
+    transform: translateX(0);
+    width: 33.333%;
+  }
+  100% {
+    transform: translateX(100%);
+    width: 0;
+  }
 }
 
 .country:hover {
