@@ -15,11 +15,12 @@ const AutoComplete = ({ countries, categories }) => {
   const [autocompleteInput, setAutocompleteInput] = useState('');
   const [tab, setTab] = useState('all');
   const [displayItem, setDisplayItem] = useState(undefined);
+  const [showDisplayItem, setShowDisplayItem] = useState(false);
 
   function resetInput() {
     setInput('');
     setFilteredSuggestions(countries);
-    setDisplayItem(undefined);
+    setShowDisplayItem(false);
   }
 
   const onChange = (e) => {
@@ -45,7 +46,7 @@ const AutoComplete = ({ countries, categories }) => {
     console.log(autocompleteInput);
     setFilteredSuggestions(filteredList);
     setActiveSuggestionIndex(-1);
-    setDisplayItem(undefined);
+    setShowDisplayItem(false);
   };
 
   const onClick = (e) => {
@@ -63,6 +64,7 @@ const AutoComplete = ({ countries, categories }) => {
     setInput(userInput);
     setActiveSuggestionIndex(-1);
     setDisplayItem(foundElement[0]);
+    setShowDisplayItem(true);
   };
 
   const onKeyDown = (e) => {
@@ -72,6 +74,7 @@ const AutoComplete = ({ countries, categories }) => {
       setInput(foundElement.name);
       setFilteredSuggestions([foundElement]);
       setDisplayItem(foundElement);
+      setShowDisplayItem(true);
       setActiveSuggestionIndex(-1);
     }
     // User pressed the up arrow
@@ -178,10 +181,16 @@ const AutoComplete = ({ countries, categories }) => {
   const DisplayPaneComponent = () => {
     return (
       <div class="country__pane pt-3">
-        <span class="country__pane--flag">{displayItem.flag}</span>
-        <span class="country__pane--title">{displayItem.name}</span>
-        <RegionPill result={displayItem} />
-        <div class="country__pane--description">{displayItem.description}</div>
+        {displayItem && (
+          <>
+            <span class="country__pane--flag">{displayItem.flag}</span>
+            <span class="country__pane--title">{displayItem.name}</span>
+            <RegionPill result={displayItem} />
+            <div class="country__pane--description">
+              {displayItem.description}
+            </div>
+          </>
+        )}
       </div>
     );
   };
@@ -205,14 +214,15 @@ const AutoComplete = ({ countries, categories }) => {
       <div className="country__container mt-3">
         <Row>
           <Col xs>{<TabListComponent />}</Col>
-          {displayItem && (
-            <Col xs sm={4} className="elementToFadeInAndOut">
-              <DisplayPaneComponent />
-            </Col>
-          )}
+          <Col
+            xs
+            sm={showDisplayItem ? 4 : 'auto'}
+            className={`${showDisplayItem ? 'ModalOpen' : 'ModalClosed'}`}
+          >
+            <DisplayPaneComponent />
+          </Col>
         </Row>
       </div>
-      {/* <div className="elementToFadeInAndOut">123</div> */}
     </>
   );
 };
