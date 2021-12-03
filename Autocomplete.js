@@ -89,6 +89,8 @@ const AutoComplete = ({ countries, categories }) => {
     else if (e.key === 'Tab' && filteredSuggestions) {
       setInput(filteredSuggestions[0].name);
       setFilteredSuggestions([filteredSuggestions[0]]);
+      setDisplayItem(filteredSuggestions[0]);
+      setShowDisplayItem(true);
       setActiveSuggestionIndex(-1);
     }
 
