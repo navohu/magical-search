@@ -4,6 +4,7 @@ import { useState } from 'react';
 import React from 'react';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import { Row, Col } from 'react-bootstrap';
 import { BsSearch, BsX } from 'react-icons/bs';
 var _ = require('lodash');
 
@@ -13,10 +14,12 @@ const AutoComplete = ({ countries, categories }) => {
   const [input, setInput] = useState('');
   const [autocompleteInput, setAutocompleteInput] = useState('');
   const [tab, setTab] = useState('all');
+  const [displayItem, setDisplayItem] = useState(undefined);
 
   function resetInput() {
     setInput('');
     setFilteredSuggestions(countries);
+    setDisplayItem(undefined);
   }
 
   const onChange = (e) => {
@@ -42,6 +45,7 @@ const AutoComplete = ({ countries, categories }) => {
     console.log(autocompleteInput);
     setFilteredSuggestions(filteredList);
     setActiveSuggestionIndex(-1);
+    setDisplayItem(undefined);
   };
 
   const onClick = (e) => {
@@ -58,6 +62,7 @@ const AutoComplete = ({ countries, categories }) => {
     setFilteredSuggestions(foundElement);
     setInput(userInput);
     setActiveSuggestionIndex(-1);
+    setDisplayItem(foundElement[0]);
   };
 
   const onKeyDown = (e) => {
@@ -66,6 +71,7 @@ const AutoComplete = ({ countries, categories }) => {
       const foundElement = filteredSuggestions[activeSuggestionIndex];
       setInput(foundElement.name);
       setFilteredSuggestions([foundElement]);
+      setDisplayItem(foundElement);
       setActiveSuggestionIndex(-1);
     }
     // User pressed the up arrow
@@ -92,6 +98,14 @@ const AutoComplete = ({ countries, categories }) => {
     }
   };
 
+  const RegionPill = ({ result }) => {
+    return (
+      <span className={`country--category country--${result.category}`}>
+        {_.find(categories, (category) => category.id === result.category).name}
+      </span>
+    );
+  };
+
   const CountryList = ({ results }) => {
     if (!results || !results.length) {
       return <NoResults />;
@@ -115,14 +129,7 @@ const AutoComplete = ({ countries, categories }) => {
               onClick={onClick}
             >
               <span>{result.name}</span>
-              <span className={`country--category country--${result.category}`}>
-                {
-                  _.find(
-                    categories,
-                    (category) => category.id === result.category
-                  ).name
-                }
-              </span>
+              <RegionPill result={result} />
             </li>
           );
         })}
@@ -168,6 +175,17 @@ const AutoComplete = ({ countries, categories }) => {
     );
   };
 
+  const DisplayPaneComponent = () => {
+    return (
+      <div class="country__pane pt-3">
+        <span class="country__pane--flag">{displayItem.flag}</span>
+        <span class="country__pane--title">{displayItem.name}</span>
+        <RegionPill result={displayItem} />
+        <div class="country__pane--description">{displayItem.description}</div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div class="input__wrapper">
@@ -183,7 +201,18 @@ const AutoComplete = ({ countries, categories }) => {
           {!input ? <BsSearch /> : <BsX />}
         </span>
       </div>
-      <div class="country__container">{<TabListComponent />}</div>
+
+      <div className="country__container mt-3">
+        <Row>
+          <Col xs>{<TabListComponent />}</Col>
+          {displayItem && (
+            <Col xs sm={4} className="elementToFadeInAndOut">
+              <DisplayPaneComponent />
+            </Col>
+          )}
+        </Row>
+      </div>
+      {/* <div className="elementToFadeInAndOut">123</div> */}
     </>
   );
 };

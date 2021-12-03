@@ -13,8 +13,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: 80%;
+  width: 100%;
   padding: 20px;
+
+  &__wrapper {
+    width: 500px;
+  }
 }
 
 body {
@@ -77,14 +81,34 @@ input {
 
   &__container {
     position: relative;
-    top: 1rem;
     box-shadow: 3px 4px 20px #63b3ed;
     border-radius: 8px;
     background: linear-gradient(360deg, #cccccc 0%, hsl(0deg 0% 98%) 10%);
-    min-width: 300px;
     min-height: 300px;
     max-height: 300px;
     overflow: hidden;
+  }
+
+  &__pane {
+    position: relative;
+    border-radius: 8px;
+    background: linear-gradient(360deg, #cccccc 0%, hsl(0deg 0% 98%) 10%);
+    min-height: 300px;
+    max-height: 300px;
+    overflow: hidden;
+
+    &--flag {
+      padding-right: 1rem;
+    }
+
+    &--title {
+      font-size: 0.75rem;
+    }
+
+    &--description {
+      font-size: 0.5rem;
+      padding-right: 1rem;
+    }
   }
 
   &--category {
@@ -113,6 +137,17 @@ input {
   }
 }
 
+.elementToFadeInAndOut {
+  opacity: 1;
+  animation: fade 1s linear;
+}
+
+
+@keyframes fade {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
 .country:hover {
   @extend .suggestion-active;
 }
@@ -124,7 +159,7 @@ input {
 }
 
 .tablist {
-  background-color: white;
+  background-color: #fafafa;
   font-size: 0.75rem;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -167,4 +202,5 @@ input {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   border-bottom: 2px solid #0084ff;
+  background-color: #fafafa;
 }
