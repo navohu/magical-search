@@ -213,6 +213,10 @@ input {
   color: none;
 }
 
+.nav-link:focus-visible {
+  outline: none;
+}
+
 .nav-tabs .nav-link.active {
   color: rgb(0, 132, 255);
   border-top-left-radius: 15px;

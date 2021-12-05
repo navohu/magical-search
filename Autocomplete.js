@@ -12,7 +12,6 @@ const AutoComplete = ({ countries, categories }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState(countries);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [input, setInput] = useState('');
-  const [autocompleteInput, setAutocompleteInput] = useState('');
   const [tab, setTab] = useState('all');
   const [displayItem, setDisplayItem] = useState(undefined);
   const [showDisplayItem, setShowDisplayItem] = useState(false);
@@ -33,43 +32,32 @@ const AutoComplete = ({ countries, categories }) => {
         filteredList.push(country);
       }
     });
-
-    const firstOption = filteredList[0];
-
-    if (firstOption) {
-      setAutocompleteInput(
-        firstOption.name.toLowerCase().replace(userInput.toLowerCase(), '')
-      );
-    }
-
     setInput(userInput);
-    console.log(autocompleteInput);
     setFilteredSuggestions(filteredList);
     setActiveSuggestionIndex(-1);
     setShowDisplayItem(false);
   };
 
   const onClick = (e) => {
-    let userInput;
+    let clickedItemName;
     if (e.target.children.length > 1) {
-      userInput = e.target.children[0].innerText;
+      clickedItemName = e.target.children[0].innerText;
     } else {
-      userInput = e.target.parentElement.children[0].innerText;
+      clickedItemName = e.target.parentElement.children[0].innerText;
     }
     const foundElement = countries.filter(
       (country) =>
-        country.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        country.name.toLowerCase().indexOf(clickedItemName.toLowerCase()) > -1
     );
     setFilteredSuggestions(foundElement);
-    setInput(userInput);
+    setInput(clickedItemName);
     setActiveSuggestionIndex(-1);
     setDisplayItem(foundElement[0]);
     setShowDisplayItem(true);
   };
 
   const onKeyDown = (e) => {
-    // User pressed the enter key
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && activeSuggestionIndex > -1) {
       const foundElement = filteredSuggestions[activeSuggestionIndex];
       setInput(foundElement.name);
       setFilteredSuggestions([foundElement]);
@@ -77,29 +65,27 @@ const AutoComplete = ({ countries, categories }) => {
       setShowDisplayItem(true);
       setActiveSuggestionIndex(-1);
     }
-    // User pressed the up arrow
+
     else if (e.key === 'ArrowUp') {
       if (activeSuggestionIndex === -1) {
         return;
       }
-
       setActiveSuggestionIndex(activeSuggestionIndex - 1);
     }
-    // user pressed the tab key - returns first element
+
+    else if (e.key === 'ArrowDown') {
+      if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
+        return;
+      }
+      setActiveSuggestionIndex(activeSuggestionIndex + 1);
+    }
+
     else if (e.key === 'Tab' && filteredSuggestions) {
       setInput(filteredSuggestions[0].name);
       setFilteredSuggestions([filteredSuggestions[0]]);
       setDisplayItem(filteredSuggestions[0]);
       setShowDisplayItem(true);
       setActiveSuggestionIndex(-1);
-    }
-
-    // User pressed the down arrow
-    else if (e.key === 'ArrowDown') {
-      if (activeSuggestionIndex - 1 === filteredSuggestions.length) {
-        return;
-      }
-      setActiveSuggestionIndex(activeSuggestionIndex + 1);
     }
   };
 
@@ -151,22 +137,14 @@ const AutoComplete = ({ countries, categories }) => {
   };
 
   const TabListComponent = () => {
-    let results;
-
-    if (filteredSuggestions.length) {
-      results = filteredSuggestions;
-    } else {
-      results = undefined;
-    }
-
     return (
       <Tabs className="tablist" onSelect={(k) => setTab(k)} activeKey={tab}>
         <Tab eventKey="all" title="All">
-          <CountryList results={results} />
+          <CountryList results={filteredSuggestions} />
         </Tab>
         {categories.map((category) => {
           const filteredByCategory = _.filter(
-            results,
+            filteredSuggestions,
             (result) => result.category === category.id
           );
 
@@ -180,7 +158,7 @@ const AutoComplete = ({ countries, categories }) => {
     );
   };
 
-  const DisplayPaneComponent = () => {
+  const DisplayPanelComponent = () => {
     return (
       <div class="country__pane pt-3">
         {displayItem && (
@@ -219,9 +197,10 @@ const AutoComplete = ({ countries, categories }) => {
           <Col
             xs
             sm={showDisplayItem ? 4 : 'auto'}
+            xs={showDisplayItem ? 4 : 'auto'}
             className={`${showDisplayItem ? 'ModalOpen' : 'ModalClosed'}`}
           >
-            <DisplayPaneComponent />
+            <DisplayPanelComponent />
           </Col>
         </Row>
       </div>
